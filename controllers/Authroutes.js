@@ -9,7 +9,8 @@ const jwt=require("jsonwebtoken");
 
 const Register=require('../models/Signup');
 const addtocart=require('../models/Daddtocart');
-
+const orders=require('../models/Orders');
+const productschema=require('../models/Addpro');
 //controllers 
 //registeruser
 const Register_user=async(req,res)=>{
@@ -49,9 +50,12 @@ const Login_user=async(req,res)=>{
             const token=await checklog.generatelogtoken();
             if(token){
                 res.cookie('checktok',token,{httpOnly:true,expire:360000+Date.now()});
-                const clientdata=await Register.findOne({Gmail:gmail}).select('Gmail');
+                const clientdata=await Register.findOne({Gmail:gmail}).select('Gmail user');
+                // console.log(clientdata);
                 const cartlist=await addtocart.find({userid:clientdata._id});
-                res.send({msg:"Logged in",status:200,user:true,userdata:clientdata,cartlist:cartlist});
+                const userorders=await orders.find({userid:clientdata._id});
+                // console.log(userorders);
+                res.send({msg:"Logged in",status:200,user:true,userdata:clientdata,cartlist:cartlist,userorders:userorders});
             }
             else{
                 res.send({msg:"unable to login"});
@@ -81,7 +85,11 @@ const Logout=async(req,res)=>{
 
 // check user status
 const check=async(req,res)=>{
-    res.send({status:200,user:true,clientdata:req.clientdata,cartdata:req.cartlist});
+    console.log(req.clientdata);
+    console.log(req.cartlist);
+    console.log(req.userorders);
+    const allproducts=await  productschema.find();
+    res.send({status:200,user:true,clientdata:req.clientdata,cartdata:req.cartlist,userorders:req.userorders,productslist:req.productslist,allproducts:allproducts});
 }
 
 module.exports={Logout,Login_user,Register_user,check};

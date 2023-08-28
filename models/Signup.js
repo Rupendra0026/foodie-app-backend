@@ -15,17 +15,6 @@ const Myschema=new mongoose.Schema({
         min:[6,"Min length has to be 6"],
         required:[true,"Password is required"],
     },
-    mycart:[
-        {
-            productid:{
-                type:"String"
-            },
-            quantity:{
-                type:"Number",
-                default:1
-            }
-        }
-    ],
     Date:{
         type:"Date",
         default:Date()
@@ -36,7 +25,11 @@ const Myschema=new mongoose.Schema({
                 type:"String"
             }
         }
-    ]
+    ],
+    user:{
+        type:Boolean,
+        default:false
+    }
 });
 
 Myschema.methods.generatelogtoken=async function(){

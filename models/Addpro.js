@@ -1,8 +1,8 @@
 const mongoose=require("mongoose");
 
 
-const proschema=new mongoose.Schema({
-    Product_name:{
+const proschema=mongoose.Schema({
+    product_name:{
         type:"String",
         required:[true,"product name is required"]
     },
@@ -17,13 +17,11 @@ const proschema=new mongoose.Schema({
     imgurl:{
         type:"String",
         required:[true,"img url is required"]
+    },
+    desc:{
+        type:"String",
     }
-    ,
-    quantity:{
-        type:"Number",
-        required:[true,"Quantity is required"]
-    }
-})
+});
 
 
 const productschema=mongoose.model("product_schema",proschema);
